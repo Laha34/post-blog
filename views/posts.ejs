@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+    
+<h1 class="mb-4">Пости блогу</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Всі пости</h2>
+    <a href="/posts/new" class="btn btn-primary">➕ Додати новий пост</a>
+</div>
+
+<% if (posts && posts.length > 0) { %>
+    <div class="row">
+        <% posts.forEach(post => { %>
+            <div class="col-md-6 col-lg-4">
+                <div class="card post-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= post.title %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Автор: <%= post.author %></h6>
+                        <p class="card-text"><%= post.description.substring(0, 100) %>...</p>
+                        <div class="btn-group w-100">
+                            <a href="/posts/<%= post._id %>" class="btn btn-outline-primary btn-sm">Переглянути</a>
+                            <a href="/posts/<%= post._id %>/edit" class="btn btn-outline-secondary btn-sm">Редагувати</a>
+                            <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Видалити цей пост?')">Видалити</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>Створено: <%= post.createdAt.toLocaleDateString('uk-UA') %></small>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+<% } else { %>
+    <div class="alert alert-info text-center">
+        <h4>😔 Тут ще немає постів!</h4>
+        <p>Створіть перший пост, натиснувши кнопку вище.</p>
+        <a href="/posts/new" class="btn btn-primary">Створити перший пост</a>
+    </div>
+<% } %>
+
+<%- include('partials/footer') %>
